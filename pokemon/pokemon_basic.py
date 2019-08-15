@@ -46,7 +46,7 @@ def draw_history(history, filename_padding):
 def load_data():
     # load data
     train_data = np.load(TRAIN_PATH)
-    # test_data = np.load(TEST_PATH)
+    test_data = np.load(TEST_PATH)
 
     # random
     rng = np.random.RandomState(SEED)
@@ -54,18 +54,12 @@ def load_data():
     rng.shuffle(indices)
     train_data = train_data[indices]
 
-    for i in range(len(train_data)):
-        x = train_data[i][1:]
-        y = train_data[i][0]
-
-        d = f"data/train/{y}"
-        if i < 100:
-            d = f"data/validation/{y}"
-
-        if not os.path.exists(d):
-            os.mkdir(d)
+    for i in range(len(test_data)):
+        # x = train_data[i][1:]
+        # y = train_data[i][0]
+        x = test_data[i]
         img = Image.fromarray(np.reshape(x, (128,128,3)), 'RGB')
-        img.save(f'{d}/{i}.jpg')
+        img.save(f'data/{i}.jpg')
 
 def preprocess_data():
     train_data = np.load(TRAIN_PATH)
@@ -99,6 +93,7 @@ def build_model():
     model.add(layers.MaxPooling2D((2,2)))
     model.add(layers.Conv2D(128, (3,3), activation='relu'))
     model.add(layers.MaxPooling2D((2,2)))
+    model.add(layers.Dropout(0.5))
     model.add(layers.Flatten())
     model.add(layers.Dense(512, activation='relu'))
     model.add(layers.Dense(5, activation='softmax'))
@@ -158,7 +153,8 @@ def train_data():
 
 if __name__ == "__main__":
     # main()
-    train_data()
+    # train_data()
+    load_data()
 
 
 
