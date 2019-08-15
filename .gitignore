@@ -1,0 +1,4 @@
+*.DS_Store
+aclImdb
+glove.6B
+*.npz
